@@ -19,7 +19,7 @@ export function TodoList() {
   const todoList = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
 
-  const AddTodo = async (content: string) => {
+  const AddTodo = (content: string) => {
     if (content == "") {
       toast.error("Please enter a task");
       return;
@@ -102,7 +102,7 @@ export function TodoList() {
               </div>
               {/* Add a button for deleting (optional) */}
               <button
-                onClick={async () => {
+                onClick={() => {
                   dispatch(deleteTodo(todo.id));
                   toast.success("Task is deleted");
                 }}
@@ -117,7 +117,7 @@ export function TodoList() {
       {todoList[0] && (
         <button
           className="bg-red-600 font-bold p-1 mt-10 text-lg text-white border-[2.5px] border-black rounded-md w-[345px] hover:text-red-600 hover:bg-white transition-all ease-in-out duration-300 hover:font-extrabold"
-          onClick={async () => {
+          onClick={() => {
             toast.success("All tasks are deleted");
             dispatch(deleteAll());
             const todoListString = JSON.stringify(todoList);
