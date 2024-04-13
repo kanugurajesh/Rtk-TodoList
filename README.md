@@ -34,18 +34,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 - Next.js
 - Tailwindcss
-- Gemini Pro
-- Rive
 - Typescript
-- API
-- Replicate
-- Markdown
-- Vercel
-- Stable Diffusion
-- Resend
-- Face Swap LLM
-- UploadThing
-- React
+- LocalStorage
+- Redux Toolkit
 
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://rajeshportfolio.me/)
