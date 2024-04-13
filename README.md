@@ -2,6 +2,10 @@
 
 A Responsive Todolist application built using Redux Toolkit & Local Storage
 
+# Images
+
+<img src="https://github.com/kanugurajesh/Rtk-TodoList/assets/77529419/ef0bbd6d-782e-4a0d-a660-654003334521" alt="img" />
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
