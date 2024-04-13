@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import type { RootState } from "@/lib/store";
@@ -14,6 +14,7 @@ import {
 
 export function TodoList() {
   const [content, setContent] = useState<string>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const todoList = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
 
@@ -25,6 +26,9 @@ export function TodoList() {
     dispatch(addTodo(content));
     toast.success("Task is added");
     content = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -39,6 +43,7 @@ export function TodoList() {
             type="text"
             placeholder="Enter the Task..."
             onChange={(e) => setContent(e.target.value)}
+            ref={inputRef}
             className="border-[2.5px] border-black rounded-md h-10 w-[300px] pl-2 font-bold"
             onKeyDown={(e) => {
               if (e.key == "Enter") {
@@ -53,8 +58,8 @@ export function TodoList() {
             <Image
               src="/plus-symbol-button.png"
               alt="Add"
-              width={22}
-              height={22}
+              width={20}
+              height={20}
             />
           </button>
         </div>
@@ -63,25 +68,28 @@ export function TodoList() {
           {todoList.map((todo) => (
             <li
               key={todo.id}
-              className="flex gap-2 items-center justify-between border-[2.5px] border-black rounded-md relative h-[44px]"
+              className="flex gap-2 items-center justify-between border-[2.5px] border-black rounded-md relative h-[43px]"
             >
-              <div className="flex gap-2 item-center justify-center">
+              <div className="flex gap-2 items-center justify-center">
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => dispatch(toggleTodo(todo.id))}
                   style={{ width: "20px", height: "20px" }}
-                  className="ml-2"
+                  className="ml-2 mr-2"
                 />
                 {/* Display todo content */}
                 <p className="font-bold">{todo.content}</p>
               </div>
               {/* Add a button for deleting (optional) */}
               <button
-                onClick={() => dispatch(deleteTodo(todo.id))}
+                onClick={() => {
+                  dispatch(deleteTodo(todo.id))
+                  toast.success("Task is deleted")
+                }}
                 className="text-md font-semibold bg-red-600 text-white bg-[#ffd731] p-2 transition-all ease-in-out duration-100 rounded-md border-[2.5px] border-black absolute right-[-2.5px]"
               >
-                <Image src="/delete.png" width={22} height={22} alt="delete" />
+                <Image src="/delete.png" width={20} height={20} alt="delete" />
               </button>
             </li>
           ))}
@@ -89,7 +97,7 @@ export function TodoList() {
       </div>
       {todoList[0] && (
         <button
-          className="bg-red-600 font-bold p-2 mt-10 text-xl text-white border-[2.5px] border-black rounded-md w-[345px] hover:text-red-600 hover:bg-white transition-all ease-in-out duration-300 hover:font-extrabold"
+          className="bg-red-600 font-bold p-1 mt-10 text-lg text-white border-[2.5px] border-black rounded-md w-[345px] hover:text-red-600 hover:bg-white transition-all ease-in-out duration-300 hover:font-extrabold"
           onClick={() => {
             toast.success("All tasks are deleted");
             dispatch(deleteAll());
