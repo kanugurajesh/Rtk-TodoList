@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Increment Decrement",
-  description: "Increment Decrement using RTK",
+  title: "TodoList",
+  description: "TodoList using RTK",
 };
 
 export default function RootLayout({

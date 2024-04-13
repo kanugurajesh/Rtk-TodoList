@@ -1,9 +1,9 @@
-import { Counter } from "@/components/Counter";
+import { TodoList } from "@/components/TodoList";
 
 export default function Home() {
   return (
     <main className="flex items-center justify-center h-screen">
-      <Counter />
+      <TodoList />
     </main>
   );
 }
