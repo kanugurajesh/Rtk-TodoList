@@ -1,24 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import type { RootState } from "@/lib/store";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, deleteTodo, toggleTodo } from "@/lib/features/todo/todoSlice";
+import {
+  addTodo,
+  deleteTodo,
+  toggleTodo,
+  deleteAll,
+} from "@/lib/features/todo/todoSlice";
 
 export function TodoList() {
   const [content, setContent] = useState<string>();
   const todoList = useSelector((state: RootState) => state.todo.todos);
   const dispatch = useDispatch();
 
-  const AddTodo = (content: string) : any => {
-    if (content == "") return;
+  const AddTodo = (content: string): any => {
+    if (content == "") {
+      toast.error("Please enter a task");
+      return;
+    }
     dispatch(addTodo(content));
+    toast.success("Task is added");
     content = "";
   };
 
   return (
     <div className="flex flex-col items-center justify h-full">
+      <Toaster />
       <h2 className="text-5xl font-extrabold mt-0 flex-start mt-[30px]">
         Todo <span className="font-semibold text-[#ffd731]">List</span>
       </h2>
@@ -28,7 +39,12 @@ export function TodoList() {
             type="text"
             placeholder="Enter the Task..."
             onChange={(e) => setContent(e.target.value)}
-            className="border-[2.5px] border-black rounded-md h-10 w-[300px] pl-2"
+            className="border-[2.5px] border-black rounded-md h-10 w-[300px] pl-2 font-bold"
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                AddTodo(content || "");
+              }
+            }}
           />
           <button
             onClick={() => AddTodo(content || "")}
@@ -43,31 +59,45 @@ export function TodoList() {
           </button>
         </div>
         {/* Loop through the todoList */}
-        <ul>
+        <ul className="mt-20 flex flex-col gap-4">
           {todoList.map((todo) => (
             <li
               key={todo.id}
-              className="flex gap-2 items-center justify-between border-2 border-black"
+              className="flex gap-2 items-center justify-between border-[2.5px] border-black rounded-md relative h-[44px]"
             >
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => dispatch(toggleTodo(todo.id))}
-                style={{ width: "18px", height: "18px" }}
-              />
-              {/* Display todo content */}
-              <p>{todo.content}</p>
+              <div className="flex gap-2 item-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={todo.completed}
+                  onChange={() => dispatch(toggleTodo(todo.id))}
+                  style={{ width: "20px", height: "20px" }}
+                  className="ml-2"
+                />
+                {/* Display todo content */}
+                <p className="font-bold">{todo.content}</p>
+              </div>
               {/* Add a button for deleting (optional) */}
               <button
                 onClick={() => dispatch(deleteTodo(todo.id))}
-                className="text-md font-semibold bg-red-600 text-white p-2 rounded-md"
+                className="text-md font-semibold bg-red-600 text-white bg-[#ffd731] p-2 transition-all ease-in-out duration-100 rounded-md border-[2.5px] border-black absolute right-[-2.5px]"
               >
-                Delete
+                <Image src="/delete.png" width={22} height={22} alt="delete" />
               </button>
             </li>
           ))}
         </ul>
       </div>
+      {todoList[0] && (
+        <button
+          className="bg-red-600 font-bold p-2 mt-10 text-xl text-white border-[2.5px] border-black rounded-md w-[345px] hover:text-red-600 hover:bg-white transition-all ease-in-out duration-300 hover:font-extrabold"
+          onClick={() => {
+            toast.success("All tasks are deleted");
+            dispatch(deleteAll());
+          }}
+        >
+          Delete All
+        </button>
+      )}
     </div>
   );
 }
