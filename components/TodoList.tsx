@@ -26,7 +26,7 @@ export function TodoList() {
     }
     dispatch(addTodo(content));
     toast.success("Task is added");
-    content = "";
+    setContent("")
     if (inputRef.current) {
       inputRef.current.value = "";
     }
